@@ -24,17 +24,22 @@ $(function () {
   // TODO: Add code to display the current date in the header of the page.
   var today = dayjs();
   $('#currentDay').text(today.format('dddd DD MMM, YYYY'));
+  var currentHour = dayjs().hour();
+  
+  console.log(currentHour)
 
   startTime = 9; //9AM START
   endTime = 17; //5PM END
   
   var dayScheduler = document.getElementById('day-scheduler');
    
-  // Create hour blocks dynamically
+  // Create hour blocks matching day
   for (let hour = startTime; hour <= endTime; hour++) {
     const hourBlock = document.createElement('div');
     hourBlock.id = `hour-${hour}`;
-    hourBlock.className = `row time-block ${hour < new Date().getHours() ? 'past' : ''}`;
+    console.log(hourBlock.id)
+    hourBlock.className = `row time-block ${hour < currentHour ? 'past' : (hour === currentHour ? 'present' : 'future')}`;
+      
   
     hourBlock.innerHTML = `
       <div class="col-2 col-md-1 hour text-center py-3">${hour % 12 === 0 ? '12' : hour % 12}${hour < 12 ? 'AM' : 'PM'}</div>
