@@ -2,26 +2,9 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
+ 
 
 
-  // TODO: Add code to display the current date in the header of the page.
   var today = dayjs();
   $('#currentDay').text(today.format('dddd DD MMM, YYYY'));
   var currentHour = dayjs().hour();
@@ -34,8 +17,8 @@ $(function () {
   var dayScheduler = document.getElementById('day-scheduler');
    
   // Create hour blocks matching day
-  for (let hour = startTime; hour <= endTime; hour++) {
-    const hourBlock = document.createElement('div');
+  for (var hour = startTime; hour <= endTime; hour++) {
+    var hourBlock = document.createElement('div');
     hourBlock.id = `hour-${hour}`;
     console.log(hourBlock.id)
     hourBlock.className = `row time-block ${hour < currentHour ? 'past' : (hour === currentHour ? 'present' : 'future')}`;
@@ -51,6 +34,48 @@ $(function () {
     dayScheduler.appendChild(hourBlock);
   }
   
+
+   
+  dayScheduler.addEventListener('click', function (event) {
+      if (event.target.classList.contains('saveBtn')) {
+      var textarea = event.target.parentElement.querySelector('.description');
+      var text = textarea.value;
+
+    // Get the ID of the time block 
+      var timeBlockId = textarea.parentElement.id;
+
+    // Create an object to store the text
+      var eventObject = {
+        text: text
+      };
+    // Convert the object to a JSON string
+      var jsonEvent = JSON.stringify(eventObject);
+    // Store the JSON string in local storage 
+      localStorage.setItem(timeBlockId, jsonEvent);
+  }
+});
+
+  // Function to load saved events from local storage 
+function loadEventsFromLocalStorage() {
+  var timeBlocks = document.querySelectorAll('.time-block');
+  
+  timeBlocks.forEach(function(block) {
+    var timeBlockId = block.id;
+    var savedEventData = localStorage.getItem(timeBlockId);
+    
+    if (savedEventData) {
+      var eventObject = JSON.parse(savedEventData);
+      var textarea = block.querySelector('.description');
+      textarea.value = eventObject.text;
+    }
+  });
+}
+
+// Call the function to load saved events when the page loads
+loadEventsFromLocalStorage();
+
+// Rest of your existing code...
+
 
   
 });
