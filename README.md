@@ -32,4 +32,9 @@ THEN the saved events persist
 preview of launched image:
 assets\img\Preview.PNG
 
+Repository:
+https://github.com/AlirizaBagdat?tab=repositories
+
+Launched site:
+https://alirizabagdat.github.io/05-day-scheduler-aliriza/
 
